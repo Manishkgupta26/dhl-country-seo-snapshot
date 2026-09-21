@@ -1,0 +1,980 @@
+<title>DHL Country SEO Snapshot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Digital Rocket brand theme — committed dark (matches digital-rocket.io) */
+  :root{
+    color-scheme: dark;
+    --page-bg:#0a0e17; --surface:#131a2c; --surface-2:#1a2338;
+    --text-1:#ffffff; --text-2:#aab4c8; --text-muted:#6f7a92;
+    --grid:#232c42; --axis:#324063; --border:rgba(255,255,255,0.09);
+    --m-sa:#3987e5; --m-ae:#d95926; --m-pk:#199e70; --m-ma:#c98500; --m-eg:#d55181;
+    --e-chatgpt:#3987e5; --e-aiov:#d95926; --e-aimode:#199e70; --e-gemini:#c98500;
+    --good:#0ca30c; --bad:#e66767; --critical:#e66767; --critical-soft:#2a1817;
+    --warning:#fab219; --warning-soft:#2a2417;
+    --accent:#4c7dff; --accent-2:#2bdacb; --accent-soft:#182338;
+    --accent-grad:linear-gradient(135deg, #4c7dff 0%, #2bdacb 100%);
+    --dhl-red:#d40511;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--page-bg); color:var(--text-1);
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding-inline:16px; padding-block: max(20px, env(safe-area-inset-top)) 48px;
+    display:flex; justify-content:center;
+  }
+  .heading, h1, h2, h3, .tab, .btn, .kpi-val{ font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap{ width:100%; max-width:1180px; display:flex; flex-direction:column; gap:22px; }
+
+  /* ---------- Password gate (cosmetic — not real security) ---------- */
+  #pwGate{ position:fixed; inset:0; z-index:999; background:#05070d; display:flex; align-items:center; justify-content:center; padding:20px; }
+  #pwGate.unlocked{ display:none; }
+  .pw-card{ width:100%; max-width:360px; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:30px 28px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.5); }
+  .pw-logos{ display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:18px; }
+  .pw-logos img{ height:34px; display:block; }
+  .pw-logos img.pw-dhl{ width:34px; border-radius:7px; }
+  .pw-card h2{ margin:0 0 6px; font-size:17px; font-weight:800; color:#fff; }
+  .pw-card p{ margin:0 0 18px; font-size:12.5px; color:var(--text-2); line-height:1.5; }
+  .pw-card input{ width:100%; font:inherit; font-size:15px; text-align:center; letter-spacing:.05em; padding:11px 14px; border-radius:9px; border:1px solid var(--border); background:var(--surface-2); color:#fff; margin-bottom:10px; }
+  .pw-card input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .pw-card button{ width:100%; font:inherit; font-family:"Montserrat",sans-serif; font-size:14px; font-weight:700; color:#fff; background:var(--accent-grad); border:none; border-radius:100px; padding:11px 0; cursor:pointer; }
+  .pw-card .pw-err{ color:var(--bad); font-size:12px; margin-top:10px; min-height:14px; }
+  .pw-shake{ animation:pwshake .35s; }
+  @keyframes pwshake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-8px);} 75%{transform:translateX(8px);} }
+
+  a{color:var(--accent-2);}
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; box-shadow:0 1px 2px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.25); }
+
+  /* ---------- Header / brand video hero ---------- */
+  .brand-hero{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--border); isolation:isolate; box-shadow:0 10px 30px rgba(0,0,0,0.35); }
+  .brand-hero-media{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; background:#05070d url('dr-bg-poster.jpg') center/cover; }
+  .brand-hero-overlay{ position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(6,9,16,0.72) 0%, rgba(8,11,19,0.82) 55%, rgba(10,14,23,0.94) 100%); }
+  .brand-hero-content{ position:relative; z-index:2; padding:22px 24px 26px; display:flex; flex-direction:column; gap:16px; }
+  @media (prefers-reduced-motion: reduce){ .brand-hero-media{ display:none; } }
+
+  .brand-logos{ display:flex; align-items:center; gap:14px; }
+  .logo-dr, .logo-dhl{ display:inline-flex; align-items:center; }
+  .logo-dr img{ height:40px; display:block; }
+  .logo-dhl img{ height:40px; width:40px; display:block; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.35); }
+  .logo-x{ color:var(--text-2); font-size:15px; font-weight:600; }
+
+  .topbar{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px; }
+  .titleblock h1{ margin:0 0 4px; font-size:27px; font-weight:800; letter-spacing:-0.01em; text-wrap:balance; color:#ffffff; }
+  .titleblock .sub{ margin:0; color:var(--text-2); font-size:13.5px; }
+  .asof{ text-align:right; font-size:12.5px; color:var(--text-2); }
+  .asof b{ color:#ffffff; font-variant-numeric: tabular-nums; }
+
+  .banner{ display:flex; gap:12px; padding:14px 16px; border-radius:12px; align-items:flex-start; }
+  .banner.crit{ background:var(--critical-soft); border:1px solid color-mix(in srgb, var(--critical) 35%, transparent); }
+  .banner.good{ background:color-mix(in srgb, var(--good) 12%, var(--surface)); border:1px solid color-mix(in srgb, var(--good) 35%, transparent); }
+  .banner svg{ flex:none; margin-top:2px; }
+  .banner .t{ font-weight:700; font-size:14px; margin:0 0 2px; color:var(--text-1); }
+  .banner .d{ margin:0; font-size:13px; color:var(--text-2); line-height:1.5; }
+
+  /* ---------- Section shells ---------- */
+  section{ display:flex; flex-direction:column; gap:12px; }
+  .sec-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .sec-head h2{ margin:0; font-size:16px; font-weight:700; }
+  .sec-head .hint{ font-size:12px; color:var(--text-muted); }
+
+  /* ---------- Legend ---------- */
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--text-2); }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .legend i{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+
+  /* ---------- Comparison grid ---------- */
+  .cmp-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:720px){ .cmp-grid{ grid-template-columns:1fr; } }
+  .cmp-card{ padding:16px 18px 14px; display:flex; flex-direction:column; gap:10px; }
+  .cmp-card h3{ margin:0; font-size:13px; font-weight:700; color:var(--text-2); text-transform:uppercase; letter-spacing:.04em; }
+  .bar-row{ display:grid; grid-template-columns:74px 1fr 64px; align-items:center; gap:10px; }
+  .bar-row .lbl{ font-size:12.5px; color:var(--text-2); }
+  .bar-track{ background:var(--surface-2); border-radius:6px; height:14px; position:relative; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:6px 3px 3px 6px; transition:width .5s ease; }
+  .bar-val{ font-size:12.5px; font-variant-numeric:tabular-nums; text-align:right; color:var(--text-1); font-weight:600; }
+
+  /* ---------- Tabs ---------- */
+  .tabs{ display:flex; gap:6px; flex-wrap:wrap; background:var(--surface-2); padding:5px; border-radius:12px; width:fit-content; }
+  .tab{ border:none; background:transparent; padding:8px 14px; border-radius:9px; font-size:13.5px; font-weight:600; color:var(--text-2); cursor:pointer; display:flex; align-items:center; gap:7px; }
+  .tab i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .tab[aria-selected="true"]{ background:var(--accent-grad); color:#ffffff; box-shadow:0 2px 8px rgba(76,125,255,0.35); }
+  .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ---------- KPI grid ---------- */
+  .kpi-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  @media (max-width:920px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:480px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+  .kpi{ padding:14px 16px; display:flex; flex-direction:column; gap:6px; }
+  .kpi .k-lbl{ font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
+  .kpi .k-val{ font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+  .k-delta{ font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:3px; width:fit-content; font-variant-numeric:tabular-nums;}
+  .k-delta.up{ color:var(--good); } .k-delta.down{ color:var(--bad); } .k-delta.flat{ color:var(--text-muted); }
+
+  /* ---------- AI engine breakdown ---------- */
+  .ai-card{ padding:16px 18px; display:flex; flex-direction:column; gap:14px; }
+  .ai-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:640px){ .ai-grid{ grid-template-columns:repeat(2,1fr); } }
+  .ai-eng{ display:flex; flex-direction:column; gap:6px; }
+  .ai-eng .name{ font-size:12px; font-weight:700; color:var(--text-2); }
+  .ai-bars{ display:flex; flex-direction:column; gap:5px; }
+  .ai-bars .row{ display:grid; grid-template-columns:44px 1fr 40px; gap:6px; align-items:center; }
+  .ai-bars .row .t{ font-size:10.5px; color:var(--text-muted); }
+  .ai-bars .track{ background:var(--surface-2); height:9px; border-radius:5px; overflow:hidden; }
+  .ai-bars .fill{ height:100%; border-radius:5px; }
+  .ai-bars .row .v{ font-size:11px; text-align:right; font-variant-numeric:tabular-nums; color:var(--text-1); font-weight:600; }
+
+  /* ---------- Keyword table ---------- */
+  .kw-toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+  .search{ position:relative; }
+  .search input{ font:inherit; font-size:13px; padding:8px 10px 8px 30px; border:1px solid var(--border); border-radius:9px; background:var(--surface); color:var(--text-1); width:220px; }
+  .search input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search svg{ position:absolute; left:9px; top:50%; transform:translateY(-50%); color:var(--text-muted); }
+  .cap-note{ font-size:12px; color:var(--text-muted); }
+
+  .tbl-wrap{ overflow-x:auto; border-radius:14px; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; min-width:720px; }
+  thead th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--text-muted); font-weight:700; padding:10px 12px; border-bottom:1px solid var(--grid); cursor:pointer; user-select:none; white-space:nowrap; }
+  thead th:hover{ color:var(--text-1); }
+  thead th.sorted{ color:var(--accent); }
+  thead th .arrow{ font-size:9px; margin-left:3px; }
+  tbody td{ padding:9px 12px; border-bottom:1px solid var(--grid); color:var(--text-2); white-space:nowrap; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody td.kw{ color:var(--text-1); font-weight:600; }
+  tbody td.num{ text-align:right; font-variant-numeric:tabular-nums; }
+  tbody td.url a{ display:inline-block; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:bottom; font-size:12px; }
+  .pill{ display:inline-block; padding:2px 7px; border-radius:6px; font-size:11px; font-weight:700; background:var(--surface-2); color:var(--text-2); }
+
+  .empty-state{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:44px 20px; color:var(--text-2); }
+  .empty-state svg{ color:var(--critical); }
+  .empty-state h3{ margin:0; font-size:15px; color:var(--text-1); }
+  .empty-state p{ margin:0; max-width:440px; font-size:13px; line-height:1.6; }
+
+  /* ---------- Content-hub hero section ---------- */
+  .hero-hub{ background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 140px); border:1px solid var(--border); border-radius:20px; padding:20px 20px 24px; gap:16px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+  .eyebrow span{ background:var(--accent-grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .eyebrow::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--accent-grad); display:inline-block; }
+  .hero-hub .hero-h2{ margin:0; font-size:21px; font-weight:800; letter-spacing:-0.01em; }
+
+  .hub-scope{ font-size:12.5px; color:var(--text-2); background:var(--surface-2); border-radius:10px; padding:10px 14px; }
+  .hub-scope code{ font-size:11.5px; background:var(--border); padding:1px 5px; border-radius:5px; }
+
+  .hub-select-wrap{ display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:6px 8px 6px 14px; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
+  .hub-select-lbl{ font-size:11.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+  .hub-select-wrap select{ font:inherit; font-family:"Montserrat", system-ui, sans-serif; font-size:14px; font-weight:700; color:var(--text-1); background:var(--surface-2); border:none; border-radius:7px; padding:7px 30px 7px 10px; appearance:none; cursor:pointer; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aab4c8' stroke-width='2.4'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat:no-repeat; background-position:right 8px center; background-size:14px; }
+  .hub-select-wrap select:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .glance-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  @media (max-width:920px){ .glance-row{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:480px){ .glance-row{ grid-template-columns:1fr; } }
+  .glance-card{ display:flex; flex-direction:column; gap:8px; padding:11px 13px; border-radius:12px; border:1.5px solid var(--border); background:var(--surface); cursor:pointer; text-align:left; font-family:inherit; }
+  .glance-card:hover{ border-color:color-mix(in srgb, var(--accent) 45%, var(--border)); }
+  .glance-card[aria-pressed="true"]{ border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent); }
+  .glance-card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .glance-card .gc-top{ display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--text-1); }
+  .glance-card .gc-dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .glance-card .gc-row{ display:flex; justify-content:space-between; align-items:baseline; font-size:11.5px; color:var(--text-muted); }
+  .glance-card .gc-row b{ color:var(--text-1); font-variant-numeric:tabular-nums; font-size:13px; margin-right:5px; }
+
+  .hero-kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:780px){ .hero-kpi-grid{ grid-template-columns:repeat(2,1fr); } }
+  .hero-kpi{ padding:14px 16px; display:flex; flex-direction:column; gap:6px; }
+  .hero-kpi .k-lbl{ font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
+  .hero-kpi .k-val{ font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+
+  .hero-charts{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:820px){ .hero-charts{ grid-template-columns:1fr; } }
+  .hero-chart-card{ padding:16px 18px 12px; display:flex; flex-direction:column; gap:10px; }
+  .hero-chart-head{ display:flex; justify-content:space-between; align-items:baseline; }
+  .hero-chart-head h3{ margin:0; font-size:13.5px; font-weight:700; }
+  .hero-chart-range{ font-size:11px; color:var(--text-muted); }
+  .hero-chart-wrap{ position:relative; }
+  .hero-chart-wrap svg{ display:block; width:100%; height:auto; }
+  .hero-tip{ position:absolute; pointer-events:none; opacity:0; transition:opacity .1s; background:var(--text-1); color:var(--page-bg); font-size:11.5px; font-weight:600; padding:6px 9px; border-radius:7px; white-space:nowrap; transform:translate(-50%,-100%); z-index:5; box-shadow:0 4px 10px rgba(0,0,0,0.2); }
+  .hero-tip b{ font-weight:800; }
+
+  .no-data-flag{ font-size:10.5px; color:var(--text-muted); font-style:italic; }
+
+  .wk-table th.wk3, .wk-table td.wk3{ position:relative; }
+  .wk-badge{ display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; color:var(--critical); }
+  .foot-ref{ font-size:11px; color:var(--text-muted); margin:0; }
+  .wk-table tr.sel-row td, table tr.sel-row td{ background:color-mix(in srgb, var(--accent) 7%, transparent); }
+
+  .notes{ padding:16px 18px; font-size:12.5px; color:var(--text-2); line-height:1.7; }
+  .notes h3{ margin:0 0 8px; font-size:13px; color:var(--text-1); }
+  .notes ul{ margin:0; padding-left:18px; }
+  .notes li{ margin-bottom:4px; }
+  .foot{ text-align:center; font-size:11.5px; color:var(--text-muted); padding-top:6px; }
+</style>
+
+<div id="pwGate">
+  <div class="pw-card">
+    <div class="pw-logos">
+      <img src="dr-logo.png" alt="Digital Rocket IO">
+      <img class="pw-dhl" src="dhl-logo.png" alt="DHL">
+    </div>
+    <h2>This report is private</h2>
+    <p>Enter the password Manish shared with you to view the DHL country SEO snapshot.</p>
+    <input type="password" id="pwInput" placeholder="Password" autocomplete="off">
+    <button type="button" id="pwSubmit">Unlock report</button>
+    <div class="pw-err" id="pwErr"></div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var GATE_PASSWORD = "dhl";
+  var gate = document.getElementById("pwGate");
+  var input = document.getElementById("pwInput");
+  var err = document.getElementById("pwErr");
+  var card = document.querySelector(".pw-card");
+
+  function unlock(){
+    gate.classList.add("unlocked");
+    try{ sessionStorage.setItem("dr_dhl_gate_unlocked", "1"); }catch(e){}
+  }
+  function tryUnlock(){
+    if(input.value.trim().toLowerCase() === GATE_PASSWORD){
+      unlock();
+    } else {
+      err.textContent = "That's not it — check with Manish.";
+      card.classList.remove("pw-shake");
+      void card.offsetWidth;
+      card.classList.add("pw-shake");
+      input.value = "";
+      input.focus();
+    }
+  }
+  try{
+    if(sessionStorage.getItem("dr_dhl_gate_unlocked") === "1"){ unlock(); }
+  }catch(e){}
+  document.getElementById("pwSubmit").addEventListener("click", tryUnlock);
+  input.addEventListener("keydown", function(e){ if(e.key === "Enter") tryUnlock(); });
+})();
+</script>
+
+<div class="wrap">
+
+  <div class="brand-hero">
+    <video class="brand-hero-media" autoplay muted loop playsinline poster="dr-bg-poster.jpg">
+      <source src="dr-bg.mp4" type="video/mp4">
+    </video>
+    <div class="brand-hero-overlay"></div>
+    <div class="brand-hero-content">
+      <div class="brand-logos">
+        <span class="logo-dr"><img src="dr-logo.png" alt="Digital Rocket IO"></span>
+        <span class="logo-x">&times;</span>
+        <span class="logo-dhl"><img src="dhl-logo.png" alt="DHL"></span>
+      </div>
+      <div class="topbar">
+        <div class="titleblock">
+          <h1>DHL Country SEO Snapshot</h1>
+          <p class="sub">Digital Rocket IO &middot; Semrush pull for dhl.com &middot; Saudi Arabia, UAE, Pakistan, Morocco, Egypt</p>
+        </div>
+        <div class="asof">Data as of <b>Sep 20&ndash;21, 2026</b><br>Domain-wide: Authority 86 &middot; Backlinks 25.4M &middot; Ref.Domains 85.7K</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero-hub">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow"><span>Primary focus</span></span>
+        <h2 class="hero-h2">Content Hub Performance</h2>
+      </div>
+      <label class="hub-select-wrap">
+        <span class="hub-select-lbl">Market</span>
+        <select id="hubMarketSelect"></select>
+      </label>
+    </div>
+    <div class="hub-scope">Scope: <code>dhl.com/discover/en-{market}/</code> &mdash; DHL's blog/content-hub subfolder, the primary work this dashboard tracks. (Domain-wide SEO figures further down are secondary context.)</div>
+
+    <div class="glance-row" id="hubGlanceRow"></div>
+
+    <div class="hero-kpi-grid" id="hubKpiGrid"></div>
+
+    <div class="hero-charts">
+      <div class="card hero-chart-card">
+        <div class="hero-chart-head"><h3>Organic traffic</h3><span class="hero-chart-range">Mar&rsquo;26&ndash;Sep&rsquo;26</span></div>
+        <div class="hero-chart-wrap" id="heroTrafficWrap"></div>
+      </div>
+      <div class="card hero-chart-card">
+        <div class="hero-chart-head"><h3>Organic keywords</h3><span class="hero-chart-range">Mar&rsquo;26&ndash;Sep&rsquo;26</span></div>
+        <div class="hero-chart-wrap" id="heroKeywordsWrap"></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:16px 18px;">
+      <div class="sec-head" style="margin:0 0 4px;">
+        <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">Monthly trend &mdash; data</h2>
+        <span class="hint">Same figures the charts above are drawn from</span>
+      </div>
+      <div class="tbl-wrap"><table class="wk-table" id="hubMonthlyTable"></table></div>
+    </div>
+
+    <div class="card" style="padding:16px 18px;">
+      <div class="sec-head" style="margin:0 0 4px;">
+        <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">Weekly breakdown &mdash; September 2026</h2>
+        <span class="hint">Week-1 = days 1&ndash;7 &middot; Week-2 = 8&ndash;14 &middot; Week-3 = 15&ndash;21 &middot; Week-4 = 22&ndash;28 &middot; Week-5 = 29+</span>
+      </div>
+      <div class="tbl-wrap"><table class="wk-table" id="hubWeeklyTable"></table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Market comparison</h2>
+      <span class="hint">Domain-wide overview &middot; secondary context &middot; captured for all 5 markets</span>
+    </div>
+    <div class="legend" id="marketLegend"></div>
+    <div class="cmp-grid" id="cmpGrid"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Market detail</h2>
+      <span class="hint">Domain-wide &middot; select a market to see its full metrics and keyword table</span>
+    </div>
+    <div class="tabs" id="marketTabs" role="tablist"></div>
+
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+    <div class="card ai-card">
+      <div class="sec-head" style="margin:0;">
+        <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">AI search visibility by engine</h2>
+        <span class="hint" id="aiTotalHint"></span>
+      </div>
+      <div class="legend" id="aiLegend"></div>
+      <div class="ai-grid" id="aiGrid"></div>
+    </div>
+
+    <div class="card" style="padding:16px 18px;">
+      <div class="kw-toolbar">
+        <div class="sec-head" style="margin:0;">
+          <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">Top organic keywords</h2>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span class="cap-note" id="kwCapNote"></span>
+          <div class="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="kwFilter" placeholder="Filter keywords&hellip;" autocomplete="off">
+          </div>
+        </div>
+      </div>
+      <div id="kwTableArea"></div>
+    </div>
+  </section>
+
+  <p class="foot">Built from the raw Semrush pull captured 2026-09-21 &middot; Digital Rocket IO</p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var MARKETS = [
+    {id:"sa", name:"Saudi Arabia", color:"var(--m-sa)",
+      authority:86, orgTraffic:170000, orgTrafficDelta:15, orgKeywords:7100, orgKeywordsDelta:7.6,
+      paidTraffic:9, paidTrafficDelta:-100, paidKeywords:2, paidKeywordsDelta:-50,
+      trafficShare:70, aiMentions:185, aiCited:443,
+      ai:{chatgpt:{m:66,c:337}, aiov:{m:14,c:42}, aimode:{m:52,c:101}, gemini:{m:53,c:37}},
+      kwStatus:"ok",
+      kw:[
+        ["dhl","N",1,"32.4K",19.05,"40.5K",53,"www.dhl.com/sa-ar/home.html","Sep 14"],
+        ["dhl tracking","T",1,"32.4K",19.05,"40.5K",64,"www.dhl.com/sa-en/home/tracking.html","Sep 14"],
+        ["dhl near me","N",5,"21.7K",12.75,"27.1K",49,"locator.dhl.com/results","Sep 14"],
+        ["dhl tracking ksa","N,T",1,"3.5K",2.07,"4.4K",43,"www.dhl.com/sa-en/home/tracking.html","Sep 06"],
+        ["تتبع dhl","N,T",1,"3.5K",2.07,"4.4K",63,"www.dhl.com/sa-en/home/tracking.html","Sep 03"],
+        ["دي اتش ال","N",1,"3.5K",2.07,"4.4K",50,"www.dhl.com/sa-ar/home.html","Jul 25"],
+        ["dhl service point","N",4,"2.9K",1.69,"3.6K",49,"locator.dhl.com/results","Aug 30"],
+        ["dhl tracking number","N,T",1,"2.3K",1.36,"2.9K",67,"www.dhl.com/sa-en/home/tracking.html","Sep 04"],
+        ["dhl تتبع","N,T",1,"1.9K",1.12,"2.4K",31,"www.dhl.com/sa-ar/home/tracking.html","Sep 03"],
+        ["تتبع دي اتش ال","N",1,"1.9K",1.12,"2.4K",45,"www.dhl.com/sa-ar/home/tracking.html","Sep 04"]
+      ]
+    },
+    {id:"ae", name:"UAE", color:"var(--m-ae)",
+      authority:86, orgTraffic:174300, orgTrafficDelta:0.8, orgKeywords:10300, orgKeywordsDelta:5.3,
+      paidTraffic:1900, paidTrafficDelta:-2.5, paidKeywords:4, paidKeywordsDelta:-50,
+      trafficShare:89, aiMentions:1700, aiCited:1000,
+      ai:{chatgpt:{m:533,c:757}, aiov:{m:199,c:144}, aimode:{m:548,c:275}, gemini:{m:469,c:98}},
+      kwStatus:"ok",
+      kw:[
+        ["dhl tracking","N",1,"59.2K",33.96,"74K",70,"www.dhl.com/ae-en/home/tracking.html","Sep 14"],
+        ["dhl","N",1,"26.5K",15.19,"33.1K",37,"www.dhl.com/","Sep 15"],
+        ["dhl uae","N",1,"6.5K",3.71,"8.1K",33,"www.dhl.com/ae-en/home.html","3 days"],
+        ["dhl dubai","N",5,"2.9K",1.65,"3.6K",34,"locator.dhl.com/results","3 days"],
+        ["dhl careers","N",1,"2.9K",1.65,"3.6K",29,"careers.dhl.com/","Sep 16"],
+        ["tracking","C",1,"2.5K",1.45,"5.4K",46,"www.dhl.com/ae-en/home/tracking.html","2 days"],
+        ["dhl contact number","N",5,"2.3K",1.33,"2.9K",33,"locator.dhl.com/results","Aug 14"],
+        ["dhl login","I",1,"2.3K",1.33,"2.9K",57,"www.dhl.com/ae-en/home/login.html","Sep 14"],
+        ["dhl tracking uae","N",4,"1.9K",1.11,"9.9K",35,"www.dhl.com/ae-en/home/tracking.html","1 day"],
+        ["dhl tracking","N",2,"1.9K",1.10,"74K",70,"www.dhl.com/","Sep 14"]
+      ]
+    },
+    {id:"pk", name:"Pakistan", color:"var(--m-pk)",
+      authority:86, orgTraffic:207100, orgTrafficDelta:3.3, orgKeywords:7400, orgKeywordsDelta:0.4,
+      paidTraffic:5, paidTrafficDelta:-89, paidKeywords:1, paidKeywordsDelta:-50,
+      trafficShare:74, aiMentions:378, aiCited:559,
+      ai:{chatgpt:{m:121,c:379}, aiov:{m:21,c:57}, aimode:{m:119,c:180}, gemini:{m:117,c:73}},
+      kwStatus:"ok",
+      kw:[
+        ["dhl tracking","N,T",1,"72.4K",34.95,"90.5K",62,"www.dhl.com/pk-en/home/tracking.html","4 days"],
+        ["dhl tracking number","N",1,"32.4K",15.64,"40.5K",69,"www.dhl.com/pk-en/home/tracking.html","Sep 17"],
+        ["dhl","N",1,"21.7K",10.46,"27.1K",46,"www.dhl.com/","Sep 13"],
+        ["dhl near me","T",6,"6.5K",3.12,"8.1K",54,"www.dhl.com/pk-en/home.html","1 day"],
+        ["dhl lahore","N",7,"5.3K",2.54,"6.6K",38,"www.dhl.com/","Sep 13"],
+        ["dhl tracking","N",2,"2.4K",1.13,"90.5K",62,"www.dhl.com/pk-en/home.html","4 days"],
+        ["dct dhl","N",1,"2.3K",1.12,"2.9K",57,"dct.dhl.com/","Sep 01"],
+        ["dhl tracking pakistan","N,T",1,"2.3K",1.12,"2.9K",53,"www.dhl.com/pk-en/home/tracking.html","Aug 30"],
+        ["tracking number","n/a",3,"2K",0.96,"22.2K",56,"www.dhl.com/pk-en/home/tracking.html","Sep 13"],
+        ["dhl pakistan","N",1,"1.5K",0.73,"1.9K",38,"www.dhl.com/pk-en/home.html","Sep 17"]
+      ]
+    },
+    {id:"ma", name:"Morocco", color:"var(--m-ma)",
+      authority:86, orgTraffic:58800, orgTrafficDelta:26, orgKeywords:692, orgKeywordsDelta:-2.1,
+      paidTraffic:0, paidTrafficDelta:-100, paidKeywords:0, paidKeywordsDelta:-100,
+      trafficShare:91, aiMentions:99, aiCited:108,
+      ai:{chatgpt:{m:26,c:83}, aiov:{m:7,c:3}, aimode:{m:29,c:29}, gemini:{m:37,c:8}},
+      kwStatus:"ok",
+      kw:[
+        ["dhl express servicepoint","N",5,"11.9K",20.15,"60.5K",41,"www.dhl.com/ma-fr/home.html","Sep 14"],
+        ["dhl express servicepoint","N",5,"6.8K",11.51,"60.5K",41,"www.dhl.com/ma-fr/home.html","Sep 14"],
+        ["dhl tracking","T",1,"6.5K",11.01,"8.1K",58,"www.dhl.com/ma-en/home/tracking.html","Aug 30"],
+        ["dhl service point","N",7,"5.3K",8.97,"6.6K",46,"locator.dhl.com/results","Sep 09"],
+        ["dhl","N",8,"3.5K",6.02,"18.1K",63,"www.dhl.com/ma-fr/home.html","3 days"],
+        ["tracking dhl","T",1,"1.9K",3.26,"2.4K",49,"www.dhl.com/ma-fr/home/suivi.html","Sep 02"],
+        ["dhl express servicepoint","N",5,"1.6K",2.67,"60.5K",41,"locator.dhl.com/results","Sep 14"],
+        ["suivi dhl","T",1,"1.5K",2.58,"1.9K",42,"www.dhl.com/ma-fr/home/suivi.html","Aug 30"],
+        ["dhl maroc","N",1,"1.5K",2.58,"1.9K",46,"www.dhl.com/ma-fr/home.html","Aug 31"],
+        ["dhl suivi","I,T",1,"1.5K",2.58,"1.9K",54,"www.dhl.com/ma-fr/home/suivi.html","Aug 29"],
+        ["dhl tracking number","T",1,"1.3K",2.17,"1.6K",59,"www.dhl.com/ma-en/home/tracking.html","Sep 02"],
+        ["dhl express servicepoint","N",5,"1.1K",1.85,"60.5K",41,"locator.dhl.com/results","Sep 14"],
+        ["dhl casablanca","N",5,"1K",1.76,"1.3K",38,"locator.dhl.com/results","Aug 26"],
+        ["dhl express marrakech","I,N",6,"862",1.46,"4.4K",37,"www.dhl.com/ma-fr/home.html","Sep 09"],
+        ["dhl near me","N",5,"704",1.19,"880",66,"locator.dhl.com/results","Sep 16"],
+        ["dhl express","N",1,"704",1.19,"880",45,"www.dhl.com/ma-fr/home/express.html","Sep 02"],
+        ["dhl express servicepoint","N",1,"605",1.02,"60.5K",41,"www.dhl.com/ma-fr/home.html","Sep 14"],
+        ["dhl tanger","N",5,"576",0.97,"720",37,"locator.dhl.com/results","Sep 04"],
+        ["dhl express marrakech","I,N",6,"492",0.83,"4.4K",37,"www.dhl.com/ma-fr/home.html","Sep 09"],
+        ["dhl tracking maroc","N,T",1,"472",0.80,"590",38,"www.dhl.com/ma-fr/home/suivi.html","Jul 26"],
+        ["dhl","N",1,"470",0.79,"18.1K",63,"www.dhl.com/ma-fr/home.html","3 days"],
+        ["dhl tetouan","N",4,"384",0.65,"480",36,"locator.dhl.com/results","Jul 27"],
+        ["dhl express servicepoint","N",4,"363",0.61,"60.5K",41,"www.dhl.com/fr-fr/home","Sep 14"],
+        ["dhl","N",2,"325",0.55,"18.1K",63,"www.dhl.com/fr-fr/home.html","3 days"],
+        ["dhl seguimiento","N",1,"312",0.53,"390",46,"www.dhl.com/es-es/home/seguimiento.html","Sep 03"],
+        ["dhl express tracking","N,T",1,"312",0.53,"390",47,"www.dhl.com/ma-en/home/tracking.html","Aug 17"],
+        ["dhl suivi colis","N,T",1,"312",0.53,"390",42,"www.dhl.com/ma-fr/home/suivi.html","Aug 11"],
+        ["dhl international tracking","N,T",1,"312",0.53,"390",64,"www.dhl.com/ma-en/home/tracking.html","Aug 03"],
+        ["suivi dhl france","T",1,"312",0.53,"390",46,"www.dhl.com/ma-fr/home/suivi.html","Jul 24"],
+        ["dhl","N",8,"303",0.51,"18.1K",63,"delivery.dhl.com/prg/shipment-options.xhtml","3 days"]
+      ]
+    },
+    {id:"eg", name:"Egypt", color:"var(--m-eg)",
+      authority:86, orgTraffic:71100, orgTrafficDelta:2.8, orgKeywords:3500, orgKeywordsDelta:6.2,
+      paidTraffic:33, paidTrafficDelta:null, paidKeywords:1, paidKeywordsDelta:null,
+      trafficShare:92, aiMentions:572, aiCited:369,
+      ai:{chatgpt:{m:163,c:261}, aiov:{m:33,c:38}, aimode:{m:188,c:120}, gemini:{m:188,c:33}},
+      kwStatus:"ok",
+      kw:[
+        ["dhl tracking","T",1,"17.8K",24.99,"22.2K",63,"www.dhl.com/eg-en/home/tracking.html","Sep 16"],
+        ["dhl","N",1,"14.5K",20.38,"18.1K",46,"www.dhl.com/us-en/home.html","Sep 16"],
+        ["dhl egypt","N",4,"2.9K",4.05,"3.6K",37,"locator.dhl.com/results","Sep 09"],
+        ["dhl tracking number","T",1,"2.3K",3.26,"2.9K",67,"www.dhl.com/eg-en/home/tracking.html","Sep 13"],
+        ["dhl tracking egypt","N,T",1,"1.9K",2.70,"2.4K",42,"www.dhl.com/eg-en/home/tracking.html","Sep 14"],
+        ["tracking","I",2,"858",1.20,"6.6K",71,"www.dhl.com/eg-en/home/tracking.html","Sep 13"],
+        ["تتبع dhl","N,T",1,"800",1.12,"1K",65,"www.dhl.com/eg-en/home/tracking.html","Sep 16"],
+        ["شحن دولي dhl","N,T",1,"704",0.99,"880",42,"www.dhl.com/eg-ar/home/get-a-quote.html","Sep 05"],
+        ["dhl express","N",1,"704",0.99,"880",39,"www.dhl.com/eg-ar/home/express.html","Sep 14"],
+        ["dhl tracking","T",2,"577",0.81,"22.2K",63,"www.dhl.com/us-en/home/tracking.html","Sep 16"],
+        ["dhl login","N,T",1,"576",0.81,"720",59,"www.dhl.com/eg-en/home/login.html","Sep 04"],
+        ["تتبع شحنة dhl","N,T",1,"576",0.81,"720",51,"www.dhl.com/eg-en/home/tracking.html","Sep 17"],
+        ["دي اتش ال","N,T",1,"576",0.81,"720",45,"www.dhl.com/eg-ar/home.html","Sep 15"],
+        ["dhl egypt hotline","I",1,"576",0.81,"720",32,"www.dhl.com/eg-ar/home/customer-service.html","Sep 13"],
+        ["شركة dhl","N",1,"472",0.66,"590",50,"www.dhl.com/eg-ar/home.html","Aug 29"],
+        ["tracking dhl","I,T",1,"472",0.66,"590",51,"www.dhl.com/eg-en/home/tracking.html","Jul 30"],
+        ["شركة شحن dhl","N",1,"472",0.66,"590",43,"www.dhl.com/eg-ar/home.html","Jul 27"],
+        ["dhl hotline","I",1,"472",0.66,"590",32,"www.dhl.com/eg-ar/home/customer-service.html","Sep 05"],
+        ["dhl","N",2,"470",0.66,"18.1K",46,"www.dhl.com/eg-ar/home/tracking.html","Sep 16"],
+        ["شحن دولي","I",1,"468",0.65,"3.6K",38,"www.dhl.com/eg-ar/home/get-a-quote.html","Sep 11"],
+        ["شحن دولي","I",7,"414",0.58,"3.6K",38,"www.dhl.com/eg-ar/home/get-a-quote.html","Sep 11"],
+        ["dhl tracking","T",3,"399",0.56,"22.2K",63,"www.dhl.com/gb-en/home/tracking.html","Sep 16"],
+        ["رقم dhl مصر","N",4,"384",0.54,"480",34,"locator.dhl.com/results","Sep 05"],
+        ["dhl تتبع شحنتك","N,T",1,"384",0.54,"480",61,"www.dhl.com/eg-ar/home/tracking.html","Jul 24"],
+        ["شركة dhl للشحن","N",1,"384",0.54,"480",43,"www.dhl.com/eg-ar/home.html","Jul 30"],
+        ["delivery","n/a",7,"363",0.51,"12.1K",82,"delivery.dhl.com/prg/on-demand-delivery.xhtml","1 day"],
+        ["dhl contact number","N",4,"312",0.43,"390",42,"locator.dhl.com/results","Sep 04"],
+        ["dhl hotline number","N",1,"312",0.43,"390",34,"www.dhl.com/eg-en/home/customer-service.html","Aug 11"],
+        ["رقم خدمة عملاء dhl","I,T",1,"312",0.43,"390",30,"www.dhl.com/eg-ar/home/customer-service.html","Sep 04"],
+        ["dhl tracking no","N,T",1,"312",0.43,"390",61,"www.dhl.com/eg-en/home/tracking.html","Jul 24"]
+      ]
+    }
+  ];
+
+  var HUB_MONTHS = ["Mar’26","Apr’26","May’26","Jun’26","Jul’26","Aug’26","Sep’26"];
+
+  var HUB = {
+    sa: { traffic:[null,null,null,null,null,null,8], keywords:[null,null,null,null,null,null,92],
+          wkTraffic:[null,44,8,null,null], wkKeywords:[null,88,92,null,null] },
+    pk: { traffic:[9407,8367,6120,6874,8185,8605,8800], keywords:[1125,1002,997,822,788,779,743],
+          wkTraffic:[9200,8900,8800,null,null], wkKeywords:[746,744,743,null,null] },
+    ae: { traffic:[1329,1161,611,948,1067,942,1000], keywords:[355,313,366,426,402,449,505],
+          wkTraffic:[1000,936,1000,null,null], wkKeywords:[456,463,505,null,null] },
+    ma: { traffic:[null,null,null,null,null,null,0], keywords:[null,null,null,null,null,6,11],
+          wkTraffic:[null,0,0,null,null], wkKeywords:[9,10,11,null,null] },
+    eg: { traffic:[null,null,null,null,null,12,19], keywords:[null,null,null,null,null,45,65],
+          wkTraffic:[8,14,19,null,null], wkKeywords:[51,53,65,null,null] }
+  };
+  var HUB_W3_DELTA = {
+    sa: { t:-20, k:51 }, pk: { t:2, k:-4.6 }, ae: { t:11, k:12 }, ma: { t:null, k:83 }, eg: { t:58, k:44 }
+  };
+
+  // ================= Content Hub hero =================
+  var hubId = MARKETS[0].id;
+
+  function pctDelta(cur, prev){
+    if(cur === null || cur === undefined || prev === null || prev === undefined || prev === 0) return null;
+    return Math.round(((cur-prev)/prev)*1000)/10;
+  }
+
+  // ---- big interactive chart builder ----
+  function buildHeroChart(vals, months, colorVar){
+    var w=560, h=210, padL=42, padR=12, padT=16, padB=24;
+    var plotW = w-padL-padR, plotH = h-padT-padB;
+    var n = vals.length;
+    var stepX = plotW/(n-1);
+    var defined = [];
+    for(var i=0;i<n;i++){ if(vals[i]!==null && vals[i]!==undefined) defined.push({i:i,v:vals[i]}); }
+    if(!defined.length){
+      return { html:'<svg viewBox="0 0 '+w+' '+h+'"><text x="'+(w/2)+'" y="'+(h/2)+'" text-anchor="middle" font-size="12" fill="var(--text-muted)">No data for this market yet</text></svg>', points:[] };
+    }
+    var max = Math.max.apply(null, defined.map(function(d){return d.v;}));
+    var min = 0;
+    if(max === min) max = 1;
+    function sx(i){ return padL + i*stepX; }
+    function sy(v){ return padT + (1 - (v-min)/(max-min)) * plotH; }
+
+    // gridlines (4 bands) + tick labels
+    var gridLines = "", tickLabels = "";
+    for(var g=0; g<=3; g++){
+      var gv = min + (max-min)*g/3;
+      var gy = sy(gv);
+      gridLines += '<line x1="'+padL+'" y1="'+gy.toFixed(1)+'" x2="'+(w-padR)+'" y2="'+gy.toFixed(1)+'" stroke="var(--grid)" stroke-width="1"/>';
+      tickLabels += '<text x="'+(padL-8)+'" y="'+(gy+3).toFixed(1)+'" font-size="10" text-anchor="end" fill="var(--text-muted)">'+fmt(Math.round(gv))+'</text>';
+    }
+
+    var segs = []; var cur = [];
+    for(i=0;i<n;i++){
+      if(vals[i]===null || vals[i]===undefined){ if(cur.length){ segs.push(cur); cur=[]; } }
+      else { cur.push(i); }
+    }
+    if(cur.length) segs.push(cur);
+
+    var areaPaths = segs.map(function(seg){
+      var d = seg.map(function(i,idx){ return (idx===0?"M":"L")+sx(i).toFixed(1)+","+sy(vals[i]).toFixed(1); }).join(" ");
+      var last = seg[seg.length-1], first = seg[0];
+      d += " L"+sx(last).toFixed(1)+","+(h-padB)+" L"+sx(first).toFixed(1)+","+(h-padB)+" Z";
+      return '<path d="'+d+'" fill="'+colorVar+'" opacity="0.10" stroke="none"/>';
+    }).join("");
+
+    var linePaths = segs.map(function(seg){
+      var d = seg.map(function(i,idx){ return (idx===0?"M":"L")+sx(i).toFixed(1)+","+sy(vals[i]).toFixed(1); }).join(" ");
+      return '<path d="'+d+'" fill="none" style="stroke:'+colorVar+'" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>';
+    }).join("");
+
+    var lastIdx = defined[defined.length-1].i;
+    var dots = defined.map(function(d){
+      var isLast = d.i === lastIdx;
+      return '<circle cx="'+sx(d.i).toFixed(1)+'" cy="'+sy(d.v).toFixed(1)+'" r="'+(isLast?4:2.6)+'" style="fill:'+colorVar+'" stroke="var(--surface)" stroke-width="'+(isLast?2:1)+'"/>';
+    }).join("");
+
+    var monthLabels = months.map(function(mo,i){
+      return '<text x="'+sx(i).toFixed(1)+'" y="'+(h-6)+'" font-size="10" text-anchor="middle" fill="var(--text-muted)">'+mo.replace("’26","")+'</text>';
+    }).join("");
+
+    var crosshair = '<line id="__CROSS__" x1="0" y1="'+padT+'" x2="0" y2="'+(h-padB)+'" stroke="var(--axis)" stroke-width="1" style="opacity:0"/>';
+    var hoverDot = '<circle id="__HOVERDOT__" r="5" style="fill:'+colorVar+'; opacity:0" stroke="var(--surface)" stroke-width="2"/>';
+    var overlay = '<rect id="__OVERLAY__" x="'+padL+'" y="0" width="'+plotW+'" height="'+h+'" fill="transparent"/>';
+
+    var svg = '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="'+h+'" role="img" aria-label="trend chart">'+
+      gridLines+tickLabels+areaPaths+linePaths+dots+crosshair+hoverDot+overlay+monthLabels+'</svg>';
+
+    var points = defined.map(function(d,idx){
+      return { x:sx(d.i), y:sy(d.v), v:d.v, label:months[d.i] };
+    });
+
+    return { html:svg, points:points, w:w, h:h };
+  }
+
+  function mountHeroChart(containerId, vals, months, colorVar, unitFmt){
+    var wrap = document.getElementById(containerId);
+    var chart = buildHeroChart(vals, months, colorVar);
+    var uid = containerId+"-"+Math.random().toString(36).slice(2,7);
+    var html = chart.html.replace(/__CROSS__/g, uid+"-cross").replace(/__HOVERDOT__/g, uid+"-dot").replace(/__OVERLAY__/g, uid+"-ov");
+    wrap.innerHTML = html + '<div class="hero-tip" id="'+uid+'-tip"></div>';
+    if(!chart.points.length) return;
+
+    var svgEl = wrap.querySelector("svg");
+    var overlay = document.getElementById(uid+"-ov");
+    var cross = document.getElementById(uid+"-cross");
+    var dot = document.getElementById(uid+"-dot");
+    var tip = document.getElementById(uid+"-tip");
+
+    function nearest(svgX){
+      var best = chart.points[0], bestD = Infinity;
+      chart.points.forEach(function(p){ var d = Math.abs(p.x - svgX); if(d < bestD){ bestD = d; best = p; } });
+      return best;
+    }
+
+    overlay.addEventListener("mousemove", function(e){
+      var rect = svgEl.getBoundingClientRect();
+      var xFrac = (e.clientX - rect.left) / rect.width;
+      var p = nearest(xFrac * chart.w);
+      cross.setAttribute("x1", p.x); cross.setAttribute("x2", p.x);
+      cross.style.opacity = 1;
+      dot.setAttribute("cx", p.x); dot.setAttribute("cy", p.y);
+      dot.style.opacity = 1;
+      tip.style.opacity = 1;
+      tip.style.left = (p.x/chart.w*rect.width) + "px";
+      tip.style.top = (p.y/chart.h*rect.height - 10) + "px";
+      tip.innerHTML = "<b>"+unitFmt(p.v)+"</b> &middot; "+p.label;
+    });
+    overlay.addEventListener("mouseleave", function(){
+      cross.style.opacity = 0; dot.style.opacity = 0; tip.style.opacity = 0;
+    });
+  }
+
+  function renderGlanceRow(){
+    document.getElementById("hubGlanceRow").innerHTML = MARKETS.map(function(m){
+      var h = HUB[m.id], d = HUB_W3_DELTA[m.id];
+      var t = h.wkTraffic[2], k = h.wkKeywords[2];
+      return '<button type="button" class="glance-card" data-id="'+m.id+'" aria-pressed="'+(m.id===hubId?"true":"false")+'">'+
+        '<span class="gc-top"><span class="gc-dot" style="background:'+m.color+'"></span>'+m.name+'</span>'+
+        '<span class="gc-row">Traffic <span><b>'+fmt(t)+'</b>'+deltaChip(d.t)+'</span></span>'+
+        '<span class="gc-row">Keywords <span><b>'+fmt(k)+'</b>'+deltaChip(d.k)+'</span></span>'+
+      '</button>';
+    }).join("");
+  }
+
+  function deltaVal(d){
+    if(d === null || d === undefined) return '<span class="k-val" style="color:var(--text-muted); font-size:22px;">n/a</span>';
+    var dir = d > 0 ? "up" : d < 0 ? "down" : "flat";
+    var arrow = d > 0 ? "&#9650;" : d < 0 ? "&#9660;" : "&#8212;";
+    return '<span class="k-val k-delta '+dir+'" style="font-size:26px;">'+arrow+' '+Math.abs(d)+'%</span>';
+  }
+
+  function renderHubKpis(){
+    var h = HUB[hubId], d = HUB_W3_DELTA[hubId];
+    var moDeltaT = pctDelta(h.traffic[6], h.traffic[5]);
+    var moDeltaK = pctDelta(h.keywords[6], h.keywords[5]);
+    var kpis = [
+      {label:"This week&rsquo;s traffic (Wk-3)", val:fmt(h.wkTraffic[2]), delta:d.t},
+      {label:"This week&rsquo;s keywords (Wk-3)", val:fmt(h.wkKeywords[2]), delta:d.k},
+      {label:"Traffic vs Aug&rsquo;26", valHtml:deltaVal(moDeltaT)},
+      {label:"Keywords vs Aug&rsquo;26", valHtml:deltaVal(moDeltaK)}
+    ];
+    document.getElementById("hubKpiGrid").innerHTML = kpis.map(function(k){
+      return '<div class="card hero-kpi"><span class="k-lbl">'+k.label+'</span>'+
+        (k.valHtml ? k.valHtml : '<span class="k-val">'+k.val+'</span>'+deltaChip(k.delta))+
+      '</div>';
+    }).join("");
+  }
+
+  function highlightHubRows(){
+    Array.prototype.forEach.call(document.querySelectorAll("#hubMonthlyTable tr, #hubWeeklyTable tr"), function(tr){
+      tr.classList.remove("sel-row");
+    });
+    var selMarket = MARKETS.filter(function(m){ return m.id === hubId; })[0];
+    ["hubMonthlyTable","hubWeeklyTable"].forEach(function(tid){
+      Array.prototype.forEach.call(document.querySelectorAll("#"+tid+" tbody tr"), function(tr){
+        if(tr.firstChild && tr.firstChild.textContent.indexOf(selMarket.name) === 0){ tr.classList.add("sel-row"); }
+      });
+    });
+  }
+
+  function renderHub(){
+    var h = HUB[hubId], m = MARKETS.filter(function(x){ return x.id === hubId; })[0];
+    document.getElementById("hubMarketSelect").value = hubId;
+    renderGlanceRow();
+    renderHubKpis();
+    mountHeroChart("heroTrafficWrap", h.traffic, HUB_MONTHS, m.color, fmt);
+    mountHeroChart("heroKeywordsWrap", h.keywords, HUB_MONTHS, m.color, fmt);
+    highlightHubRows();
+  }
+
+  document.getElementById("hubMarketSelect").innerHTML = MARKETS.map(function(m){
+    return '<option value="'+m.id+'">'+m.name+'</option>';
+  }).join("");
+  document.getElementById("hubMarketSelect").addEventListener("change", function(e){
+    hubId = e.target.value;
+    renderHub();
+  });
+  document.getElementById("hubGlanceRow").addEventListener("click", function(e){
+    var btn = e.target.closest(".glance-card");
+    if(!btn) return;
+    hubId = btn.getAttribute("data-id");
+    renderHub();
+  });
+
+  (function renderMonthlyTable(){
+    var head = '<thead><tr><th>Market &middot; metric</th>' + HUB_MONTHS.map(function(mo){ return '<th>'+mo+'</th>'; }).join("") + '</tr></thead>';
+    function moCell(v){
+      if(v === null || v === undefined) return '<td class="num" style="color:var(--text-muted);">&ndash;</td>';
+      return '<td class="num">'+v.toLocaleString()+'</td>';
+    }
+    var body = MARKETS.map(function(m){
+      var h = HUB[m.id];
+      var rowT = '<tr><td class="kw">'+m.name+' &middot; Traffic</td>' + h.traffic.map(moCell).join("") + '</tr>';
+      var rowK = '<tr><td class="kw">'+m.name+' &middot; Keywords</td>' + h.keywords.map(moCell).join("") + '</tr>';
+      return rowT + rowK;
+    }).join("");
+    document.getElementById("hubMonthlyTable").innerHTML = head + '<tbody>'+body+'</tbody>';
+  })();
+
+  function wkCell(v, wk3delta){
+    if(v === null || v === undefined) return '<td class="num" style="color:var(--text-muted);">&ndash;</td>';
+    if(wk3delta !== undefined && wk3delta !== null){
+      return '<td class="num wk3">'+fmt(v)+' '+deltaChip(wk3delta)+'</td>';
+    }
+    if(wk3delta === null) return '<td class="num wk3">'+fmt(v)+'</td>';
+    return '<td class="num">'+fmt(v)+'</td>';
+  }
+
+  (function renderWeeklyTable(){
+    var head = '<thead><tr><th>Market &middot; metric</th><th>Week-1</th><th>Week-2</th><th class="wk3">Week-3</th><th>Week-4</th><th>Week-5</th><th>Sep&rsquo;26 Overall</th></tr></thead>';
+    var body = MARKETS.map(function(m){
+      var h = HUB[m.id];
+      var d = HUB_W3_DELTA[m.id];
+      var overallT = h.wkTraffic.filter(function(v){return v!==null;}).pop();
+      var overallK = h.wkKeywords.filter(function(v){return v!==null;}).pop();
+      var rowT = '<tr><td class="kw">'+m.name+' &middot; Traffic</td>'+
+        wkCell(h.wkTraffic[0]) + wkCell(h.wkTraffic[1]) + wkCell(h.wkTraffic[2], d.t) + wkCell(h.wkTraffic[3]) + wkCell(h.wkTraffic[4]) +
+        '<td class="num" style="font-weight:700;">'+(overallT!==undefined?fmt(overallT):"&ndash;")+'</td></tr>';
+      var rowK = '<tr><td class="kw">'+m.name+' &middot; Keywords</td>'+
+        wkCell(h.wkKeywords[0]) + wkCell(h.wkKeywords[1]) + wkCell(h.wkKeywords[2], d.k) + wkCell(h.wkKeywords[3]) + wkCell(h.wkKeywords[4]) +
+        '<td class="num" style="font-weight:700;">'+(overallK!==undefined?fmt(overallK):"&ndash;")+'</td></tr>';
+      return rowT + rowK;
+    }).join("");
+    document.getElementById("hubWeeklyTable").innerHTML = head + '<tbody>'+body+'</tbody>';
+  })();
+
+  renderHub();
+
+  var ENGINES = [
+    {id:"chatgpt", name:"ChatGPT", color:"var(--e-chatgpt)"},
+    {id:"aiov", name:"AI Overview", color:"var(--e-aiov)"},
+    {id:"aimode", name:"AI Mode", color:"var(--e-aimode)"},
+    {id:"gemini", name:"Gemini", color:"var(--e-gemini)"}
+  ];
+
+  function fmt(n){
+    if(n === null || n === undefined) return "&ndash;";
+    var abs = Math.abs(n);
+    if(abs >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,"") + "M";
+    if(abs >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,"") + "K";
+    return String(n);
+  }
+  function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+  function deltaChip(d){
+    if(d === null || d === undefined) return '<span class="k-delta flat">n/a</span>';
+    var dir = d > 0 ? "up" : d < 0 ? "down" : "flat";
+    var arrow = d > 0 ? "&#9650;" : d < 0 ? "&#9660;" : "&#8212;";
+    return '<span class="k-delta '+dir+'">'+arrow+' '+Math.abs(d)+'%</span>';
+  }
+
+  // ---------- Market legend + comparison charts ----------
+  var legendEl = document.getElementById("marketLegend");
+  legendEl.innerHTML = MARKETS.map(function(m){
+    return '<span><i style="background:'+m.color+'"></i>'+m.name+'</span>';
+  }).join("");
+
+  var CMP_METRICS = [
+    {key:"orgTraffic", label:"Organic traffic (visits/mo)"},
+    {key:"orgKeywords", label:"Organic keywords ranked"},
+    {key:"trafficShare", label:"Organic traffic share (%)", pct:true},
+    {key:"aiMentions", label:"AI search mentions"}
+  ];
+
+  var cmpGrid = document.getElementById("cmpGrid");
+  cmpGrid.innerHTML = CMP_METRICS.map(function(metric){
+    var max = Math.max.apply(null, MARKETS.map(function(m){ return m[metric.key]; }));
+    var rows = MARKETS.map(function(m){
+      var val = m[metric.key];
+      var pct = max ? (val/max*100) : 0;
+      var display = metric.pct ? val+"%" : fmt(val);
+      return '<div class="bar-row">'+
+        '<span class="lbl">'+m.name+'</span>'+
+        '<div class="bar-track"><div class="bar-fill" style="width:'+pct.toFixed(1)+'%; background:'+m.color+'"></div></div>'+
+        '<span class="bar-val">'+display+'</span>'+
+      '</div>';
+    }).join("");
+    return '<div class="card cmp-card"><h3>'+metric.label+'</h3>'+rows+'</div>';
+  }).join("");
+
+  // ---------- Tabs ----------
+  var tabsEl = document.getElementById("marketTabs");
+  tabsEl.innerHTML = MARKETS.map(function(m, i){
+    return '<button class="tab" role="tab" data-id="'+m.id+'" aria-selected="'+(i===0?"true":"false")+'"><i style="background:'+m.color+'"></i>'+m.name+'</button>';
+  }).join("");
+
+  var activeId = MARKETS[0].id;
+
+  tabsEl.addEventListener("click", function(e){
+    var btn = e.target.closest(".tab");
+    if(!btn) return;
+    activeId = btn.getAttribute("data-id");
+    Array.prototype.forEach.call(tabsEl.querySelectorAll(".tab"), function(t){
+      t.setAttribute("aria-selected", t === btn ? "true" : "false");
+    });
+    render();
+  });
+
+  // ---------- AI legend ----------
+  document.getElementById("aiLegend").innerHTML = ENGINES.map(function(e){
+    return '<span><i style="background:'+e.color+'"></i>'+e.name+'</span>';
+  }).join("");
+
+  // ---------- Keyword table state ----------
+  var sortState = { col: 2, dir: 1 }; // default: Position ascending
+  var filterText = "";
+  var KW_COLS = [
+    {key:0, label:"Keyword"},
+    {key:1, label:"Intent"},
+    {key:2, label:"Pos.", num:true},
+    {key:3, label:"Traffic", num:true, parse:true},
+    {key:4, label:"Traffic %", num:true},
+    {key:5, label:"Volume", num:true, parse:true},
+    {key:6, label:"KD %", num:true},
+    {key:7, label:"URL"},
+    {key:8, label:"Updated"}
+  ];
+
+  function parseNum(v){
+    if(typeof v === "number") return v;
+    var s = String(v).trim();
+    var mult = 1;
+    if(/K$/i.test(s)){ mult = 1e3; s = s.slice(0,-1); }
+    if(/M$/i.test(s)){ mult = 1e6; s = s.slice(0,-1); }
+    var n = parseFloat(s);
+    return isNaN(n) ? 0 : n*mult;
+  }
+
+  document.getElementById("kwFilter").addEventListener("input", function(e){
+    filterText = e.target.value.toLowerCase();
+    renderKwTable();
+  });
+
+  function renderKwTable(){
+    var market = MARKETS.filter(function(m){ return m.id === activeId; })[0];
+    var area = document.getElementById("kwTableArea");
+    var capNote = document.getElementById("kwCapNote");
+
+    if(market.kwStatus === "blocked"){
+      capNote.textContent = "";
+      area.innerHTML = '<div class="empty-state">'+
+        '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'+
+        '<h3>Not captured this run</h3>'+
+        '<p>The '+market.name+' keyword pull was blocked by Semrush\'s 10-request quota gate before it ran. No figures are shown here rather than estimating &mdash; retry once the quota resets or the account is upgraded.</p>'+
+      '</div>';
+      return;
+    }
+
+    capNote.textContent = market.kw.length <= 10
+      ? "Top 10 rows — capped by Manish's account plan tier"
+      : "Top "+market.kw.length+" rows — pulled via mayna@digital-rocket.io (no 10-row cap on that account)";
+
+    var rows = market.kw.slice();
+    if(filterText){
+      rows = rows.filter(function(r){ return r[0].toLowerCase().indexOf(filterText) !== -1; });
+    }
+    rows.sort(function(a,b){
+      var col = sortState.col;
+      var av = KW_COLS[col].parse ? parseNum(a[col]) : a[col];
+      var bv = KW_COLS[col].parse ? parseNum(b[col]) : b[col];
+      if(typeof av === "string" && !KW_COLS[col].num){ av = av.toLowerCase(); bv = bv.toLowerCase(); }
+      if(av < bv) return -1*sortState.dir;
+      if(av > bv) return 1*sortState.dir;
+      return 0;
+    });
+
+    var head = KW_COLS.map(function(c, i){
+      var sorted = i === sortState.col;
+      var arrow = sorted ? (sortState.dir===1 ? "&#9650;" : "&#9660;") : "";
+      return '<th class="'+(sorted?"sorted":"")+'" data-col="'+i+'">'+c.label+(sorted?' <span class="arrow">'+arrow+'</span>':'')+'</th>';
+    }).join("");
+
+    var body = rows.map(function(r){
+      var url = "https://"+r[7];
+      return '<tr>'+
+        '<td class="kw">'+esc(r[0])+'</td>'+
+        '<td><span class="pill">'+esc(r[1])+'</span></td>'+
+        '<td class="num">'+r[2]+'</td>'+
+        '<td class="num">'+esc(r[3])+'</td>'+
+        '<td class="num">'+r[4]+'%</td>'+
+        '<td class="num">'+esc(r[5])+'</td>'+
+        '<td class="num">'+r[6]+'%</td>'+
+        '<td class="url"><a href="'+url+'" target="_blank" rel="noopener">'+esc(r[7])+'</a></td>'+
+        '<td>'+esc(r[8])+'</td>'+
+      '</tr>';
+    }).join("");
+
+    if(!rows.length){
+      body = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:24px;">No keywords match &ldquo;'+esc(filterText)+'&rdquo;</td></tr>';
+    }
+
+    area.innerHTML = '<div class="tbl-wrap"><table><thead><tr>'+head+'</tr></thead><tbody>'+body+'</tbody></table></div>';
+
+    Array.prototype.forEach.call(area.querySelectorAll("thead th"), function(th){
+      th.addEventListener("click", function(){
+        var col = parseInt(th.getAttribute("data-col"), 10);
+        if(sortState.col === col){ sortState.dir *= -1; }
+        else { sortState.col = col; sortState.dir = 1; }
+        renderKwTable();
+      });
+    });
+  }
+
+  // ---------- KPI + AI render ----------
+  function render(){
+    var m = MARKETS.filter(function(x){ return x.id === activeId; })[0];
+
+    var kpis = [
+      {label:"Authority score", val:m.authority},
+      {label:"Organic traffic", val:fmt(m.orgTraffic), delta:m.orgTrafficDelta},
+      {label:"Organic keywords", val:fmt(m.orgKeywords), delta:m.orgKeywordsDelta},
+      {label:"Traffic share", val:m.trafficShare+"%"},
+      {label:"Paid traffic", val:fmt(m.paidTraffic), delta:m.paidTrafficDelta},
+      {label:"Paid keywords", val:fmt(m.paidKeywords), delta:m.paidKeywordsDelta},
+      {label:"AI mentions", val:fmt(m.aiMentions)},
+      {label:"AI cited pages", val:fmt(m.aiCited)},
+      {label:"Backlinks", val:"25.4M"},
+      {label:"Ref. domains", val:"85.7K"}
+    ];
+    document.getElementById("kpiGrid").innerHTML = kpis.map(function(k){
+      return '<div class="card kpi"><span class="k-lbl">'+k.label+'</span>'+
+        '<span class="k-val">'+k.val+'</span>'+
+        (k.delta !== undefined ? deltaChip(k.delta) : '')+
+      '</div>';
+    }).join("");
+
+    var maxAi = Math.max.apply(null, ENGINES.map(function(e){ return m.ai[e.id].m; }).concat([1]));
+    document.getElementById("aiTotalHint").textContent = m.name+" — "+fmt(m.aiMentions)+" total mentions across 4 engines";
+    document.getElementById("aiGrid").innerHTML = ENGINES.map(function(e){
+      var d = m.ai[e.id];
+      var mPct = (d.m/maxAi*100).toFixed(1);
+      var cPct = (d.c/maxAi*100).toFixed(1);
+      return '<div class="ai-eng"><span class="name">'+e.name+'</span>'+
+        '<div class="ai-bars">'+
+          '<div class="row"><span class="t">Mentions</span><div class="track"><div class="fill" style="width:'+mPct+'%; background:'+e.color+'"></div></div><span class="v">'+d.m+'</span></div>'+
+          '<div class="row"><span class="t">Cited</span><div class="track"><div class="fill" style="width:'+cPct+'%; background:'+e.color+'; opacity:.55"></div></div><span class="v">'+d.c+'</span></div>'+
+        '</div>'+
+      '</div>';
+    }).join("");
+
+    renderKwTable();
+  }
+
+  render();
+})();
+</script>
