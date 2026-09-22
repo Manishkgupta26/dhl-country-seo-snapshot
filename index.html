@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DHL Country SEO Snapshot</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -208,6 +213,8 @@
   .notes li{ margin-bottom:4px; }
   .foot{ text-align:center; font-size:11.5px; color:var(--text-muted); padding-top:6px; }
 </style>
+</head>
+<body>
 
 <div id="pwGate">
   <div class="pw-card">
@@ -281,35 +288,15 @@
   <section class="hero-hub">
     <div class="sec-head">
       <div>
-        <span class="eyebrow"><span>Primary focus</span></span>
         <h2 class="hero-h2">Content Hub Performance</h2>
       </div>
-      <label class="hub-select-wrap">
-        <span class="hub-select-lbl">Market</span>
-        <select id="hubMarketSelect"></select>
-      </label>
     </div>
-    <div class="hub-scope">Scope: <code>dhl.com/discover/en-{market}/</code> &mdash; DHL's blog/content-hub subfolder, the primary work this dashboard tracks. (Domain-wide SEO figures further down are secondary context.)</div>
-
-    <div class="glance-row" id="hubGlanceRow"></div>
-
-    <div class="hero-kpi-grid" id="hubKpiGrid"></div>
-
-    <div class="hero-charts">
-      <div class="card hero-chart-card">
-        <div class="hero-chart-head"><h3>Organic traffic</h3><span class="hero-chart-range">Mar&rsquo;26&ndash;Sep&rsquo;26</span></div>
-        <div class="hero-chart-wrap" id="heroTrafficWrap"></div>
-      </div>
-      <div class="card hero-chart-card">
-        <div class="hero-chart-head"><h3>Organic keywords</h3><span class="hero-chart-range">Mar&rsquo;26&ndash;Sep&rsquo;26</span></div>
-        <div class="hero-chart-wrap" id="heroKeywordsWrap"></div>
-      </div>
-    </div>
+    <div class="hub-scope">Scope: <code>dhl.com/discover/en-{market}/</code> &mdash; DHL's blog/content-hub subfolder.</div>
 
     <div class="card" style="padding:16px 18px;">
       <div class="sec-head" style="margin:0 0 4px;">
         <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">Monthly trend &mdash; data</h2>
-        <span class="hint">Same figures the charts above are drawn from</span>
+        <span class="hint">Mar&rsquo;26 &ndash; Sep&rsquo;26, all 5 markets</span>
       </div>
       <div class="tbl-wrap"><table class="wk-table" id="hubMonthlyTable"></table></div>
     </div>
@@ -320,50 +307,6 @@
         <span class="hint">Week-1 = days 1&ndash;7 &middot; Week-2 = 8&ndash;14 &middot; Week-3 = 15&ndash;21 &middot; Week-4 = 22&ndash;28 &middot; Week-5 = 29+</span>
       </div>
       <div class="tbl-wrap"><table class="wk-table" id="hubWeeklyTable"></table></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <h2>Market comparison</h2>
-      <span class="hint">Domain-wide overview &middot; secondary context &middot; captured for all 5 markets</span>
-    </div>
-    <div class="legend" id="marketLegend"></div>
-    <div class="cmp-grid" id="cmpGrid"></div>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <h2>Market detail</h2>
-      <span class="hint">Domain-wide &middot; select a market to see its full metrics and keyword table</span>
-    </div>
-    <div class="tabs" id="marketTabs" role="tablist"></div>
-
-    <div class="kpi-grid" id="kpiGrid"></div>
-
-    <div class="card ai-card">
-      <div class="sec-head" style="margin:0;">
-        <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">AI search visibility by engine</h2>
-        <span class="hint" id="aiTotalHint"></span>
-      </div>
-      <div class="legend" id="aiLegend"></div>
-      <div class="ai-grid" id="aiGrid"></div>
-    </div>
-
-    <div class="card" style="padding:16px 18px;">
-      <div class="kw-toolbar">
-        <div class="sec-head" style="margin:0;">
-          <h2 style="font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2);">Top organic keywords</h2>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <span class="cap-note" id="kwCapNote"></span>
-          <div class="search">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="kwFilter" placeholder="Filter keywords&hellip;" autocomplete="off">
-          </div>
-        </div>
-      </div>
-      <div id="kwTableArea"></div>
     </div>
   </section>
 
@@ -530,192 +473,13 @@
     sa: { t:-20, k:51 }, pk: { t:2, k:-4.6 }, ae: { t:11, k:12 }, ma: { t:null, k:83 }, eg: { t:58, k:44 }
   };
 
-  // ================= Content Hub hero =================
-  var hubId = MARKETS[0].id;
-
-  function pctDelta(cur, prev){
-    if(cur === null || cur === undefined || prev === null || prev === undefined || prev === 0) return null;
-    return Math.round(((cur-prev)/prev)*1000)/10;
+  function fmt(n){
+    if(n === null || n === undefined) return "&ndash;";
+    var abs = Math.abs(n);
+    if(abs >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,"") + "M";
+    if(abs >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,"") + "K";
+    return String(n);
   }
-
-  // ---- big interactive chart builder ----
-  function buildHeroChart(vals, months, colorVar){
-    var w=560, h=210, padL=42, padR=12, padT=16, padB=24;
-    var plotW = w-padL-padR, plotH = h-padT-padB;
-    var n = vals.length;
-    var stepX = plotW/(n-1);
-    var defined = [];
-    for(var i=0;i<n;i++){ if(vals[i]!==null && vals[i]!==undefined) defined.push({i:i,v:vals[i]}); }
-    if(!defined.length){
-      return { html:'<svg viewBox="0 0 '+w+' '+h+'"><text x="'+(w/2)+'" y="'+(h/2)+'" text-anchor="middle" font-size="12" fill="var(--text-muted)">No data for this market yet</text></svg>', points:[] };
-    }
-    var max = Math.max.apply(null, defined.map(function(d){return d.v;}));
-    var min = 0;
-    if(max === min) max = 1;
-    function sx(i){ return padL + i*stepX; }
-    function sy(v){ return padT + (1 - (v-min)/(max-min)) * plotH; }
-
-    // gridlines (4 bands) + tick labels
-    var gridLines = "", tickLabels = "";
-    for(var g=0; g<=3; g++){
-      var gv = min + (max-min)*g/3;
-      var gy = sy(gv);
-      gridLines += '<line x1="'+padL+'" y1="'+gy.toFixed(1)+'" x2="'+(w-padR)+'" y2="'+gy.toFixed(1)+'" stroke="var(--grid)" stroke-width="1"/>';
-      tickLabels += '<text x="'+(padL-8)+'" y="'+(gy+3).toFixed(1)+'" font-size="10" text-anchor="end" fill="var(--text-muted)">'+fmt(Math.round(gv))+'</text>';
-    }
-
-    var segs = []; var cur = [];
-    for(i=0;i<n;i++){
-      if(vals[i]===null || vals[i]===undefined){ if(cur.length){ segs.push(cur); cur=[]; } }
-      else { cur.push(i); }
-    }
-    if(cur.length) segs.push(cur);
-
-    var areaPaths = segs.map(function(seg){
-      var d = seg.map(function(i,idx){ return (idx===0?"M":"L")+sx(i).toFixed(1)+","+sy(vals[i]).toFixed(1); }).join(" ");
-      var last = seg[seg.length-1], first = seg[0];
-      d += " L"+sx(last).toFixed(1)+","+(h-padB)+" L"+sx(first).toFixed(1)+","+(h-padB)+" Z";
-      return '<path d="'+d+'" fill="'+colorVar+'" opacity="0.10" stroke="none"/>';
-    }).join("");
-
-    var linePaths = segs.map(function(seg){
-      var d = seg.map(function(i,idx){ return (idx===0?"M":"L")+sx(i).toFixed(1)+","+sy(vals[i]).toFixed(1); }).join(" ");
-      return '<path d="'+d+'" fill="none" style="stroke:'+colorVar+'" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>';
-    }).join("");
-
-    var lastIdx = defined[defined.length-1].i;
-    var dots = defined.map(function(d){
-      var isLast = d.i === lastIdx;
-      return '<circle cx="'+sx(d.i).toFixed(1)+'" cy="'+sy(d.v).toFixed(1)+'" r="'+(isLast?4:2.6)+'" style="fill:'+colorVar+'" stroke="var(--surface)" stroke-width="'+(isLast?2:1)+'"/>';
-    }).join("");
-
-    var monthLabels = months.map(function(mo,i){
-      return '<text x="'+sx(i).toFixed(1)+'" y="'+(h-6)+'" font-size="10" text-anchor="middle" fill="var(--text-muted)">'+mo.replace("’26","")+'</text>';
-    }).join("");
-
-    var crosshair = '<line id="__CROSS__" x1="0" y1="'+padT+'" x2="0" y2="'+(h-padB)+'" stroke="var(--axis)" stroke-width="1" style="opacity:0"/>';
-    var hoverDot = '<circle id="__HOVERDOT__" r="5" style="fill:'+colorVar+'; opacity:0" stroke="var(--surface)" stroke-width="2"/>';
-    var overlay = '<rect id="__OVERLAY__" x="'+padL+'" y="0" width="'+plotW+'" height="'+h+'" fill="transparent"/>';
-
-    var svg = '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="'+h+'" role="img" aria-label="trend chart">'+
-      gridLines+tickLabels+areaPaths+linePaths+dots+crosshair+hoverDot+overlay+monthLabels+'</svg>';
-
-    var points = defined.map(function(d,idx){
-      return { x:sx(d.i), y:sy(d.v), v:d.v, label:months[d.i] };
-    });
-
-    return { html:svg, points:points, w:w, h:h };
-  }
-
-  function mountHeroChart(containerId, vals, months, colorVar, unitFmt){
-    var wrap = document.getElementById(containerId);
-    var chart = buildHeroChart(vals, months, colorVar);
-    var uid = containerId+"-"+Math.random().toString(36).slice(2,7);
-    var html = chart.html.replace(/__CROSS__/g, uid+"-cross").replace(/__HOVERDOT__/g, uid+"-dot").replace(/__OVERLAY__/g, uid+"-ov");
-    wrap.innerHTML = html + '<div class="hero-tip" id="'+uid+'-tip"></div>';
-    if(!chart.points.length) return;
-
-    var svgEl = wrap.querySelector("svg");
-    var overlay = document.getElementById(uid+"-ov");
-    var cross = document.getElementById(uid+"-cross");
-    var dot = document.getElementById(uid+"-dot");
-    var tip = document.getElementById(uid+"-tip");
-
-    function nearest(svgX){
-      var best = chart.points[0], bestD = Infinity;
-      chart.points.forEach(function(p){ var d = Math.abs(p.x - svgX); if(d < bestD){ bestD = d; best = p; } });
-      return best;
-    }
-
-    overlay.addEventListener("mousemove", function(e){
-      var rect = svgEl.getBoundingClientRect();
-      var xFrac = (e.clientX - rect.left) / rect.width;
-      var p = nearest(xFrac * chart.w);
-      cross.setAttribute("x1", p.x); cross.setAttribute("x2", p.x);
-      cross.style.opacity = 1;
-      dot.setAttribute("cx", p.x); dot.setAttribute("cy", p.y);
-      dot.style.opacity = 1;
-      tip.style.opacity = 1;
-      tip.style.left = (p.x/chart.w*rect.width) + "px";
-      tip.style.top = (p.y/chart.h*rect.height - 10) + "px";
-      tip.innerHTML = "<b>"+unitFmt(p.v)+"</b> &middot; "+p.label;
-    });
-    overlay.addEventListener("mouseleave", function(){
-      cross.style.opacity = 0; dot.style.opacity = 0; tip.style.opacity = 0;
-    });
-  }
-
-  function renderGlanceRow(){
-    document.getElementById("hubGlanceRow").innerHTML = MARKETS.map(function(m){
-      var h = HUB[m.id], d = HUB_W3_DELTA[m.id];
-      var t = h.wkTraffic[2], k = h.wkKeywords[2];
-      return '<button type="button" class="glance-card" data-id="'+m.id+'" aria-pressed="'+(m.id===hubId?"true":"false")+'">'+
-        '<span class="gc-top"><span class="gc-dot" style="background:'+m.color+'"></span>'+m.name+'</span>'+
-        '<span class="gc-row">Traffic <span><b>'+fmt(t)+'</b>'+deltaChip(d.t)+'</span></span>'+
-        '<span class="gc-row">Keywords <span><b>'+fmt(k)+'</b>'+deltaChip(d.k)+'</span></span>'+
-      '</button>';
-    }).join("");
-  }
-
-  function deltaVal(d){
-    if(d === null || d === undefined) return '<span class="k-val" style="color:var(--text-muted); font-size:22px;">n/a</span>';
-    var dir = d > 0 ? "up" : d < 0 ? "down" : "flat";
-    var arrow = d > 0 ? "&#9650;" : d < 0 ? "&#9660;" : "&#8212;";
-    return '<span class="k-val k-delta '+dir+'" style="font-size:26px;">'+arrow+' '+Math.abs(d)+'%</span>';
-  }
-
-  function renderHubKpis(){
-    var h = HUB[hubId], d = HUB_W3_DELTA[hubId];
-    var moDeltaT = pctDelta(h.traffic[6], h.traffic[5]);
-    var moDeltaK = pctDelta(h.keywords[6], h.keywords[5]);
-    var kpis = [
-      {label:"This week&rsquo;s traffic (Wk-3)", val:fmt(h.wkTraffic[2]), delta:d.t},
-      {label:"This week&rsquo;s keywords (Wk-3)", val:fmt(h.wkKeywords[2]), delta:d.k},
-      {label:"Traffic vs Aug&rsquo;26", valHtml:deltaVal(moDeltaT)},
-      {label:"Keywords vs Aug&rsquo;26", valHtml:deltaVal(moDeltaK)}
-    ];
-    document.getElementById("hubKpiGrid").innerHTML = kpis.map(function(k){
-      return '<div class="card hero-kpi"><span class="k-lbl">'+k.label+'</span>'+
-        (k.valHtml ? k.valHtml : '<span class="k-val">'+k.val+'</span>'+deltaChip(k.delta))+
-      '</div>';
-    }).join("");
-  }
-
-  function highlightHubRows(){
-    Array.prototype.forEach.call(document.querySelectorAll("#hubMonthlyTable tr, #hubWeeklyTable tr"), function(tr){
-      tr.classList.remove("sel-row");
-    });
-    var selMarket = MARKETS.filter(function(m){ return m.id === hubId; })[0];
-    ["hubMonthlyTable","hubWeeklyTable"].forEach(function(tid){
-      Array.prototype.forEach.call(document.querySelectorAll("#"+tid+" tbody tr"), function(tr){
-        if(tr.firstChild && tr.firstChild.textContent.indexOf(selMarket.name) === 0){ tr.classList.add("sel-row"); }
-      });
-    });
-  }
-
-  function renderHub(){
-    var h = HUB[hubId], m = MARKETS.filter(function(x){ return x.id === hubId; })[0];
-    document.getElementById("hubMarketSelect").value = hubId;
-    renderGlanceRow();
-    renderHubKpis();
-    mountHeroChart("heroTrafficWrap", h.traffic, HUB_MONTHS, m.color, fmt);
-    mountHeroChart("heroKeywordsWrap", h.keywords, HUB_MONTHS, m.color, fmt);
-    highlightHubRows();
-  }
-
-  document.getElementById("hubMarketSelect").innerHTML = MARKETS.map(function(m){
-    return '<option value="'+m.id+'">'+m.name+'</option>';
-  }).join("");
-  document.getElementById("hubMarketSelect").addEventListener("change", function(e){
-    hubId = e.target.value;
-    renderHub();
-  });
-  document.getElementById("hubGlanceRow").addEventListener("click", function(e){
-    var btn = e.target.closest(".glance-card");
-    if(!btn) return;
-    hubId = btn.getAttribute("data-id");
-    renderHub();
-  });
 
   (function renderMonthlyTable(){
     var head = '<thead><tr><th>Market &middot; metric</th>' + HUB_MONTHS.map(function(mo){ return '<th>'+mo+'</th>'; }).join("") + '</tr></thead>';
@@ -732,249 +496,28 @@
     document.getElementById("hubMonthlyTable").innerHTML = head + '<tbody>'+body+'</tbody>';
   })();
 
-  function wkCell(v, wk3delta){
+  function wkCell(v){
     if(v === null || v === undefined) return '<td class="num" style="color:var(--text-muted);">&ndash;</td>';
-    if(wk3delta !== undefined && wk3delta !== null){
-      return '<td class="num wk3">'+fmt(v)+' '+deltaChip(wk3delta)+'</td>';
-    }
-    if(wk3delta === null) return '<td class="num wk3">'+fmt(v)+'</td>';
     return '<td class="num">'+fmt(v)+'</td>';
   }
 
   (function renderWeeklyTable(){
-    var head = '<thead><tr><th>Market &middot; metric</th><th>Week-1</th><th>Week-2</th><th class="wk3">Week-3</th><th>Week-4</th><th>Week-5</th><th>Sep&rsquo;26 Overall</th></tr></thead>';
+    var head = '<thead><tr><th>Market &middot; metric</th><th>Week-1</th><th>Week-2</th><th>Week-3</th><th>Week-4</th><th>Week-5</th><th>Sep&rsquo;26 Overall</th></tr></thead>';
     var body = MARKETS.map(function(m){
       var h = HUB[m.id];
-      var d = HUB_W3_DELTA[m.id];
       var overallT = h.wkTraffic.filter(function(v){return v!==null;}).pop();
       var overallK = h.wkKeywords.filter(function(v){return v!==null;}).pop();
       var rowT = '<tr><td class="kw">'+m.name+' &middot; Traffic</td>'+
-        wkCell(h.wkTraffic[0]) + wkCell(h.wkTraffic[1]) + wkCell(h.wkTraffic[2], d.t) + wkCell(h.wkTraffic[3]) + wkCell(h.wkTraffic[4]) +
+        wkCell(h.wkTraffic[0]) + wkCell(h.wkTraffic[1]) + wkCell(h.wkTraffic[2]) + wkCell(h.wkTraffic[3]) + wkCell(h.wkTraffic[4]) +
         '<td class="num" style="font-weight:700;">'+(overallT!==undefined?fmt(overallT):"&ndash;")+'</td></tr>';
       var rowK = '<tr><td class="kw">'+m.name+' &middot; Keywords</td>'+
-        wkCell(h.wkKeywords[0]) + wkCell(h.wkKeywords[1]) + wkCell(h.wkKeywords[2], d.k) + wkCell(h.wkKeywords[3]) + wkCell(h.wkKeywords[4]) +
+        wkCell(h.wkKeywords[0]) + wkCell(h.wkKeywords[1]) + wkCell(h.wkKeywords[2]) + wkCell(h.wkKeywords[3]) + wkCell(h.wkKeywords[4]) +
         '<td class="num" style="font-weight:700;">'+(overallK!==undefined?fmt(overallK):"&ndash;")+'</td></tr>';
       return rowT + rowK;
     }).join("");
     document.getElementById("hubWeeklyTable").innerHTML = head + '<tbody>'+body+'</tbody>';
   })();
-
-  renderHub();
-
-  var ENGINES = [
-    {id:"chatgpt", name:"ChatGPT", color:"var(--e-chatgpt)"},
-    {id:"aiov", name:"AI Overview", color:"var(--e-aiov)"},
-    {id:"aimode", name:"AI Mode", color:"var(--e-aimode)"},
-    {id:"gemini", name:"Gemini", color:"var(--e-gemini)"}
-  ];
-
-  function fmt(n){
-    if(n === null || n === undefined) return "&ndash;";
-    var abs = Math.abs(n);
-    if(abs >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,"") + "M";
-    if(abs >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,"") + "K";
-    return String(n);
-  }
-  function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
-  function deltaChip(d){
-    if(d === null || d === undefined) return '<span class="k-delta flat">n/a</span>';
-    var dir = d > 0 ? "up" : d < 0 ? "down" : "flat";
-    var arrow = d > 0 ? "&#9650;" : d < 0 ? "&#9660;" : "&#8212;";
-    return '<span class="k-delta '+dir+'">'+arrow+' '+Math.abs(d)+'%</span>';
-  }
-
-  // ---------- Market legend + comparison charts ----------
-  var legendEl = document.getElementById("marketLegend");
-  legendEl.innerHTML = MARKETS.map(function(m){
-    return '<span><i style="background:'+m.color+'"></i>'+m.name+'</span>';
-  }).join("");
-
-  var CMP_METRICS = [
-    {key:"orgTraffic", label:"Organic traffic (visits/mo)"},
-    {key:"orgKeywords", label:"Organic keywords ranked"},
-    {key:"trafficShare", label:"Organic traffic share (%)", pct:true},
-    {key:"aiMentions", label:"AI search mentions"}
-  ];
-
-  var cmpGrid = document.getElementById("cmpGrid");
-  cmpGrid.innerHTML = CMP_METRICS.map(function(metric){
-    var max = Math.max.apply(null, MARKETS.map(function(m){ return m[metric.key]; }));
-    var rows = MARKETS.map(function(m){
-      var val = m[metric.key];
-      var pct = max ? (val/max*100) : 0;
-      var display = metric.pct ? val+"%" : fmt(val);
-      return '<div class="bar-row">'+
-        '<span class="lbl">'+m.name+'</span>'+
-        '<div class="bar-track"><div class="bar-fill" style="width:'+pct.toFixed(1)+'%; background:'+m.color+'"></div></div>'+
-        '<span class="bar-val">'+display+'</span>'+
-      '</div>';
-    }).join("");
-    return '<div class="card cmp-card"><h3>'+metric.label+'</h3>'+rows+'</div>';
-  }).join("");
-
-  // ---------- Tabs ----------
-  var tabsEl = document.getElementById("marketTabs");
-  tabsEl.innerHTML = MARKETS.map(function(m, i){
-    return '<button class="tab" role="tab" data-id="'+m.id+'" aria-selected="'+(i===0?"true":"false")+'"><i style="background:'+m.color+'"></i>'+m.name+'</button>';
-  }).join("");
-
-  var activeId = MARKETS[0].id;
-
-  tabsEl.addEventListener("click", function(e){
-    var btn = e.target.closest(".tab");
-    if(!btn) return;
-    activeId = btn.getAttribute("data-id");
-    Array.prototype.forEach.call(tabsEl.querySelectorAll(".tab"), function(t){
-      t.setAttribute("aria-selected", t === btn ? "true" : "false");
-    });
-    render();
-  });
-
-  // ---------- AI legend ----------
-  document.getElementById("aiLegend").innerHTML = ENGINES.map(function(e){
-    return '<span><i style="background:'+e.color+'"></i>'+e.name+'</span>';
-  }).join("");
-
-  // ---------- Keyword table state ----------
-  var sortState = { col: 2, dir: 1 }; // default: Position ascending
-  var filterText = "";
-  var KW_COLS = [
-    {key:0, label:"Keyword"},
-    {key:1, label:"Intent"},
-    {key:2, label:"Pos.", num:true},
-    {key:3, label:"Traffic", num:true, parse:true},
-    {key:4, label:"Traffic %", num:true},
-    {key:5, label:"Volume", num:true, parse:true},
-    {key:6, label:"KD %", num:true},
-    {key:7, label:"URL"},
-    {key:8, label:"Updated"}
-  ];
-
-  function parseNum(v){
-    if(typeof v === "number") return v;
-    var s = String(v).trim();
-    var mult = 1;
-    if(/K$/i.test(s)){ mult = 1e3; s = s.slice(0,-1); }
-    if(/M$/i.test(s)){ mult = 1e6; s = s.slice(0,-1); }
-    var n = parseFloat(s);
-    return isNaN(n) ? 0 : n*mult;
-  }
-
-  document.getElementById("kwFilter").addEventListener("input", function(e){
-    filterText = e.target.value.toLowerCase();
-    renderKwTable();
-  });
-
-  function renderKwTable(){
-    var market = MARKETS.filter(function(m){ return m.id === activeId; })[0];
-    var area = document.getElementById("kwTableArea");
-    var capNote = document.getElementById("kwCapNote");
-
-    if(market.kwStatus === "blocked"){
-      capNote.textContent = "";
-      area.innerHTML = '<div class="empty-state">'+
-        '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'+
-        '<h3>Not captured this run</h3>'+
-        '<p>The '+market.name+' keyword pull was blocked by Semrush\'s 10-request quota gate before it ran. No figures are shown here rather than estimating &mdash; retry once the quota resets or the account is upgraded.</p>'+
-      '</div>';
-      return;
-    }
-
-    capNote.textContent = market.kw.length <= 10
-      ? "Top 10 rows — capped by Manish's account plan tier"
-      : "Top "+market.kw.length+" rows — pulled via mayna@digital-rocket.io (no 10-row cap on that account)";
-
-    var rows = market.kw.slice();
-    if(filterText){
-      rows = rows.filter(function(r){ return r[0].toLowerCase().indexOf(filterText) !== -1; });
-    }
-    rows.sort(function(a,b){
-      var col = sortState.col;
-      var av = KW_COLS[col].parse ? parseNum(a[col]) : a[col];
-      var bv = KW_COLS[col].parse ? parseNum(b[col]) : b[col];
-      if(typeof av === "string" && !KW_COLS[col].num){ av = av.toLowerCase(); bv = bv.toLowerCase(); }
-      if(av < bv) return -1*sortState.dir;
-      if(av > bv) return 1*sortState.dir;
-      return 0;
-    });
-
-    var head = KW_COLS.map(function(c, i){
-      var sorted = i === sortState.col;
-      var arrow = sorted ? (sortState.dir===1 ? "&#9650;" : "&#9660;") : "";
-      return '<th class="'+(sorted?"sorted":"")+'" data-col="'+i+'">'+c.label+(sorted?' <span class="arrow">'+arrow+'</span>':'')+'</th>';
-    }).join("");
-
-    var body = rows.map(function(r){
-      var url = "https://"+r[7];
-      return '<tr>'+
-        '<td class="kw">'+esc(r[0])+'</td>'+
-        '<td><span class="pill">'+esc(r[1])+'</span></td>'+
-        '<td class="num">'+r[2]+'</td>'+
-        '<td class="num">'+esc(r[3])+'</td>'+
-        '<td class="num">'+r[4]+'%</td>'+
-        '<td class="num">'+esc(r[5])+'</td>'+
-        '<td class="num">'+r[6]+'%</td>'+
-        '<td class="url"><a href="'+url+'" target="_blank" rel="noopener">'+esc(r[7])+'</a></td>'+
-        '<td>'+esc(r[8])+'</td>'+
-      '</tr>';
-    }).join("");
-
-    if(!rows.length){
-      body = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:24px;">No keywords match &ldquo;'+esc(filterText)+'&rdquo;</td></tr>';
-    }
-
-    area.innerHTML = '<div class="tbl-wrap"><table><thead><tr>'+head+'</tr></thead><tbody>'+body+'</tbody></table></div>';
-
-    Array.prototype.forEach.call(area.querySelectorAll("thead th"), function(th){
-      th.addEventListener("click", function(){
-        var col = parseInt(th.getAttribute("data-col"), 10);
-        if(sortState.col === col){ sortState.dir *= -1; }
-        else { sortState.col = col; sortState.dir = 1; }
-        renderKwTable();
-      });
-    });
-  }
-
-  // ---------- KPI + AI render ----------
-  function render(){
-    var m = MARKETS.filter(function(x){ return x.id === activeId; })[0];
-
-    var kpis = [
-      {label:"Authority score", val:m.authority},
-      {label:"Organic traffic", val:fmt(m.orgTraffic), delta:m.orgTrafficDelta},
-      {label:"Organic keywords", val:fmt(m.orgKeywords), delta:m.orgKeywordsDelta},
-      {label:"Traffic share", val:m.trafficShare+"%"},
-      {label:"Paid traffic", val:fmt(m.paidTraffic), delta:m.paidTrafficDelta},
-      {label:"Paid keywords", val:fmt(m.paidKeywords), delta:m.paidKeywordsDelta},
-      {label:"AI mentions", val:fmt(m.aiMentions)},
-      {label:"AI cited pages", val:fmt(m.aiCited)},
-      {label:"Backlinks", val:"25.4M"},
-      {label:"Ref. domains", val:"85.7K"}
-    ];
-    document.getElementById("kpiGrid").innerHTML = kpis.map(function(k){
-      return '<div class="card kpi"><span class="k-lbl">'+k.label+'</span>'+
-        '<span class="k-val">'+k.val+'</span>'+
-        (k.delta !== undefined ? deltaChip(k.delta) : '')+
-      '</div>';
-    }).join("");
-
-    var maxAi = Math.max.apply(null, ENGINES.map(function(e){ return m.ai[e.id].m; }).concat([1]));
-    document.getElementById("aiTotalHint").textContent = m.name+" — "+fmt(m.aiMentions)+" total mentions across 4 engines";
-    document.getElementById("aiGrid").innerHTML = ENGINES.map(function(e){
-      var d = m.ai[e.id];
-      var mPct = (d.m/maxAi*100).toFixed(1);
-      var cPct = (d.c/maxAi*100).toFixed(1);
-      return '<div class="ai-eng"><span class="name">'+e.name+'</span>'+
-        '<div class="ai-bars">'+
-          '<div class="row"><span class="t">Mentions</span><div class="track"><div class="fill" style="width:'+mPct+'%; background:'+e.color+'"></div></div><span class="v">'+d.m+'</span></div>'+
-          '<div class="row"><span class="t">Cited</span><div class="track"><div class="fill" style="width:'+cPct+'%; background:'+e.color+'; opacity:.55"></div></div><span class="v">'+d.c+'</span></div>'+
-        '</div>'+
-      '</div>';
-    }).join("");
-
-    renderKwTable();
-  }
-
-  render();
 })();
 </script>
+</body>
+</html>
